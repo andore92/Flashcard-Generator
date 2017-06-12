@@ -2,32 +2,6 @@ var BasicCard = require("./BasicCard");
 var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
 
-
-// var firstPresident = new BasicCard(
-//     "Who was the first president of the United States?", "George Washington");
-
-// // "Who was the first president of the United States?"
-// console.log(firstPresident.front); 
-
-// // "George Washington"
-// console.log(firstPresident.back); 
-
-// var firstPresidentCloze = new ClozeCard(
-//     "George Washington was the first president of the United States.", "George Washington");
-
-// // "George Washington"
-// console.log(firstPresidentCloze.cloze); 
-
-// // " ... was the first president of the United States.
-// console.log(firstPresidentCloze.partial); 
-
-// // "George Washington was the first president of the United States.
-// console.log(firstPresidentCloze.fullText); 
-
-// // Should throw or log an error because "oops" doesn't appear in "This doesn't work"
-// var brokenCloze = new ClozeCard("This doesn't work", "oops");
-
-
 var basicCardArr = [];
 var clozeCardArr = [];
 
@@ -103,4 +77,30 @@ var createClozeCards = function () {
     }
   }
 };
-createClozeCards();
+
+var startup = function () {
+  inquirer.prompt([
+      {
+        name: "startupQuestion",
+        message: "Have you created flashcards before?"
+      }
+    ]).then(function(answers){
+        var startupQuestion = answers.startupQuestion
+        if(startupQuestion === "no") {
+          inquirer.prompt([
+        {
+          name: "cardTypeSelection",
+          message: "Would you like to create Basic or Cloze cards?"
+        }
+      ]).then(function(answers){
+          var cardTypeSelection = answers.cardTypeSelection
+          if(cardTypeSelection === "basic"){
+            createBasicCards();
+          } if(ClozeCard === "cloze" ) {
+            createClozeCards();
+          } 
+      })
+      }
+    })
+}
+startup();
