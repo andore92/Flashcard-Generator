@@ -1,7 +1,9 @@
 var ClozeCard = function(text, cloze) {
-	this.partial = partial;
+	this.fullText = text;
 	this.cloze = cloze;
-	this.fullText = partial + cloze;
+	this.partial = text.split(cloze).pop();
+	
+	
 
 	this.checkCloze = function () {
 		if (fullText.includes(cloze)) {
@@ -10,6 +12,6 @@ var ClozeCard = function(text, cloze) {
 			console.log("incorrect!")
 		}
 	}
-}
+};
 
 module.exports = ClozeCard;
