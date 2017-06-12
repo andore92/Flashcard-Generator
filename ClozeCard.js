@@ -4,7 +4,7 @@ var ClozeCard = function(text, cloze) {
 	this.fullText = partial + cloze;
 
 	this.checkCloze = function () {
-		if (fullText.indexOf(cloze !== -1)) {
+		if (fullText.includes(cloze)) {
 			console.log("correct!")
 		} else {
 			console.log("incorrect!")
