@@ -180,8 +180,22 @@ var startup = function () {
 
       })
       } if (startUpQuestion = "no") {
-        console.log("still working on that");
+       inquirer.prompt([
+        {
+          name: "cardTypeSelection",
+          message: "Would you like to create basic or cloze cards?"
+        }
+        ]).then(function(answers){
+          var cardTypeSelection = answers.cardTypeSelection
+          if(cardTypeSelection === "basic"){
+            createBasicCards();
+
+          } if(cardTypeSelection === "cloze" ) {
+            createClozeCards();
+          } 
+
+      })
       }
     })
 }
-createBasicCards();
+startup();
