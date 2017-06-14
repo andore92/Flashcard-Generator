@@ -40,12 +40,12 @@
 		{
 			"text":"The Boston Massacre was the incident where British troops fired on a mob, killing five people",
 			"cloze":"The Boston Massacre",
-			"partial":"was the incidet where British troops fired on a mob, killing five people"
+			"partial":"was the incident where British troops fired on a mob, killing five people"
 		},
 		{
 			"text":"The Boston Tea Party took place in 1773",
 			"cloze":"The Boston Tea Party",
-			"partial":"tok place in 1773"
+			"partial":"took place in 1773"
 		}
 	]
 	}

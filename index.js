@@ -37,22 +37,24 @@ var playBasicCards = function () {
      }  
     }
 
-function playClozeCards() {
-    
+var playClozeCards = function() {
+    if (clozeCount < clozeCardsArr.length) { 
       inquirer.prompt([
         {
           name: "question",
-          message: clozeCardsArr[1].partial
+          message: clozeCardsArr[clozeCount].partial
         }
         ]).then(function(answers){
-          if (answers.question === clozeCardsArr[0].cloze) {
+          if (answers.question === clozeCardsArr[clozeCount].cloze) {
             clozeCorrect++;
             console.log("correct");
           } else {
             console.log("incorrect");
           }
+          clozeCount++;
+          playClozeCards();
       })
-      
+    }  
        
     }
 
@@ -139,7 +141,7 @@ function startup() {
           } if(cardTypeSelection === "cloze" ) {
             playClozeCards();
           } 
-          
+
       })
       }
     })
