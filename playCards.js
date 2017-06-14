@@ -3,7 +3,7 @@ var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
 var fs = require("fs");
 var cardData = require("./cardData.json");
-var createCards = require("./createCards.js");
+
 
 var basicCardsArr = cardData.cards.basic;
 var clozeCardsArr = cardData.cards.cloze;
@@ -19,8 +19,9 @@ var basicCorrect = 0;
 var clozeCorrect = 0;
 
 
+var playCards = {
 
-var playBasicCards = function () {
+basicCards: function () {
   if (basicCount === 0) {
     console.log("----------------------------------------");
     console.log("");
@@ -45,7 +46,7 @@ var playBasicCards = function () {
             console.log("incorrect");
           }
           basicCount++;
-          playBasicCards();
+          playCards.basicCards();
       })
       
      } else {
@@ -61,15 +62,15 @@ var playBasicCards = function () {
       ]).then(function(answers){
         if (answers.retry === "yes") {
             basicCount=0;
-            playBasicCards();
+            playCards.basicCards();
         } else if (answers.retry === "no") {
           console.log("Goodbye!");
         }
       })
      } 
-    }
+    },
 
-var playClozeCards = function() {
+clozeCards: function() {
     if (clozeCount === 0) {
     console.log("----------------------------------------");
     console.log("");
@@ -94,7 +95,7 @@ var playClozeCards = function() {
             console.log("incorrect");
           }
           clozeCount++;
-          playClozeCards();
+          playCards.clozeCards();
       })
     }  else {
       console.log("You got " + clozeCorrect + " questions correct");
@@ -109,7 +110,7 @@ var playClozeCards = function() {
       ]).then(function(answers){
         if (answers.retry === "yes") {
             clozeCount=0;
-            playClozeCards();
+            playCards.clozeCards();
         } else if (answers.retry === "no") {
           console.log("Goodbye!");
         }
@@ -117,51 +118,6 @@ var playClozeCards = function() {
      } 
        
     }
-
-
-
-
-var startup = function () {
-  inquirer.prompt([
-      {
-        name: "startupQuestion",
-        message: "Have you created flashcards before?"
-      }
-    ]).then(function(answers){
-        var startupQuestion = answers.startupQuestion
-        if(startupQuestion === "yes") {
-          inquirer.prompt([
-        {
-          name: "cardTypeSelection",
-          message: "Would you like to play with basic or cloze cards?"
-        }
-      ]).then(function(answers){
-          var cardTypeSelection = answers.cardTypeSelection
-          if(cardTypeSelection === "basic"){
-            playBasicCards();
-
-          } if(cardTypeSelection === "cloze" ) {
-            playClozeCards();
-          } 
-
-      })
-      } else if (startUpQuestion = "no") {
-       inquirer.prompt([
-        {
-          name: "cardTypeSelection",
-          message: "Would you like to create basic or cloze cards?"
-        }
-        ]).then(function(answers){
-          var cardTypeSelection = answers.cardTypeSelection
-          if(cardTypeSelection === "basic"){
-            createCards.basicCards();
-
-          } if(cardTypeSelection === "cloze" ) {
-            createCards.clozeCards();
-          } 
-
-      })
-      } 
-    })
 }
-startup();
+
+module.exports = playCards
