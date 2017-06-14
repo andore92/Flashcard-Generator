@@ -1,6 +1,9 @@
 var BasicCard = require("./BasicCard");
 var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
+var cardData = require("./cardData.json");
+
+
 
 var basicCardArr = [];
 var clozeCardArr = [];
@@ -8,15 +11,7 @@ var clozeCardArr = [];
 var basicCount = 0;
 var clozeCount = 0;
 
-BasicCard.prototype.printInfo = function() {
-  console.log("Front: " + this.front + "\nBack: " + this.back);
-  console.log("---------------");
-};
 
-ClozeCard.prototype.printInfo = function() {
-  console.log("Full Text: " + this.fullText + "\nCloze: " + this.cloze + "\nPartial: " + this.partial);
-  console.log("---------------");
-};
 
 var createBasicCards = function () {
   // if statement to ensure that our questions are only asked five times
@@ -43,7 +38,7 @@ var createBasicCards = function () {
     })
   } else {
     for (var x = 0; x <basicCardArr.length; x++) {
-      basicCardArr[x].printInfo();
+      console.log("done");
     }
   }
 };
@@ -73,7 +68,7 @@ var createClozeCards = function () {
     })
   } else {
     for (var x = 0; x <clozeCardArr.length; x++) {
-       clozeCardArr[x].printInfo();
+       console.log("done")
     }
   }
 };
@@ -103,4 +98,3 @@ var startup = function () {
       }
     })
 }
-startup();
