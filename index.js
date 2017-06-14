@@ -1,6 +1,7 @@
 var BasicCard = require("./BasicCard");
 var ClozeCard = require("./ClozeCard");
 var inquirer = require("inquirer");
+var fs = require("fs");
 var cardData = require("./cardData.json");
 
 var basicCardsArr = cardData.cards.basic;
@@ -8,13 +9,16 @@ var clozeCardsArr = cardData.cards.cloze;
 
 
 
-
-
 var basicCount = 0;
 var clozeCount = 0;
 
+var basicCreateCount = 0;
+var clozeCreateCount = 0;
+
 var basicCorrect = 0;
 var clozeCorrect = 0;
+
+
 
 var playBasicCards = function () {
   if (basicCount < basicCardsArr.length) {   
@@ -34,7 +38,12 @@ var playBasicCards = function () {
           playBasicCards();
       })
       
-     }  
+     } else {
+      console.log("You got " + basicCorrect + " questions correct");
+        if (basicCorrect === basicCardsArr.length){
+          console.log("Wow, you got them all right, have a gold star!");
+        }
+     } 
     }
 
 var playClozeCards = function() {
@@ -42,7 +51,7 @@ var playClozeCards = function() {
       inquirer.prompt([
         {
           name: "question",
-          message: clozeCardsArr[clozeCount].partial
+          message: " *BLANK* " + clozeCardsArr[clozeCount].partial
         }
         ]).then(function(answers){
           if (answers.question === clozeCardsArr[clozeCount].cloze) {
@@ -54,14 +63,19 @@ var playClozeCards = function() {
           clozeCount++;
           playClozeCards();
       })
-    }  
+    }  else {
+      console.log("You got " + clozeCorrect + " questions correct");
+        if (clozeCorrect === clozeCardsArr.length){
+          console.log("Wow, you got them all right, have a gold star!");
+        }
+     } 
        
     }
 
 
 function createBasicCards() {
-  // if statement to ensure that our questions are only asked five times
-  if (basicCount < 5) {
+  
+  if (basicCreateCount < 5) {
     console.log("Create new flashcard");
     inquirer.prompt([
       {
@@ -75,11 +89,23 @@ function createBasicCards() {
       var newBasicCard = new BasicCard(
         answers.front,
         answers.back);
-      // pushes newguy object into our array
-      basicCardArr.push(newBasicCard);
-      // add one to count to increment our recursive loop by one
+     
+      fs.readFile('./cardData.json', 'utf-8', function(err, data) {
+        if (err) throw err
+
+        var arrayOfObjects = JSON.parse(data)
+        arrayOfObjects.cards.basic.push(newBasicCard)
+
+  
+
+        fs.writeFile('./cardData.json', JSON.stringify(arrayOfObjects), 'utf-8', function(err) {
+        if (err) throw err
+        console.log('Done!')
+        })
+      })
+      
       basicCount++;
-      // run the askquestion function again so as to either end the loop or ask the questions again
+      
       createBasicCards();
     })
   } else {
@@ -89,9 +115,10 @@ function createBasicCards() {
   }
 };
 
-function createClozeCards() {
-  // if statement to ensure that our questions are only asked five times
-  if (clozeCount < 5) {
+var createClozeCards = function () {
+  
+  
+  if (clozeCreateCount < 5) {
     console.log("Create new cloze flashcard");
     inquirer.prompt([
       {
@@ -105,21 +132,30 @@ function createClozeCards() {
       var newClozeCard = new ClozeCard(
         answers.fullText,
         answers.cloze);
-      // pushes newguy object into our array
-      clozeCardArr.push(newClozeCard);
-      // add one to count to increment our recursive loop by one
-      clozeCount++;
-      // run the askquestion function again so as to either end the loop or ask the questions again
+    
+      fs.readFile('./cardData.json', 'utf-8', function(err, data) {
+        if (err) throw err
+
+        var arrayOfObjects = JSON.parse(data)
+        arrayOfObjects.cards.cloze.push(newClozeCard)
+
+  
+
+        fs.writeFile('./cardData.json', JSON.stringify(arrayOfObjects), 'utf-8', function(err) {
+        if (err) throw err
+        console.log('Done!')
+        })
+      })
+      clozeCreateCount++;
+     
       createClozeCards();
     })
   } else {
-    for (var x = 0; x <clozeCardArr.length; x++) {
-       console.log("done")
-    }
+    console.log("All cards created!");
   }
 };
 
-function startup() {
+var startup = function () {
   inquirer.prompt([
       {
         name: "startupQuestion",
@@ -131,7 +167,7 @@ function startup() {
           inquirer.prompt([
         {
           name: "cardTypeSelection",
-          message: "Would you like to play with Basic or Cloze cards?"
+          message: "Would you like to play with basic or cloze cards?"
         }
       ]).then(function(answers){
           var cardTypeSelection = answers.cardTypeSelection
@@ -143,7 +179,9 @@ function startup() {
           } 
 
       })
+      } if (startUpQuestion = "no") {
+        console.log("still working on that");
       }
     })
 }
-startup();
+createBasicCards();
