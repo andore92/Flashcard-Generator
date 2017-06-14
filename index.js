@@ -73,7 +73,7 @@ var playClozeCards = function() {
     }
 
 
-function createBasicCards() {
+var createBasicCards = function() {
   
   if (basicCreateCount < 5) {
     console.log("Create new flashcard");
