@@ -21,6 +21,13 @@ var clozeCorrect = 0;
 
 
 var playBasicCards = function () {
+  if (basicCount === 0) {
+    console.log("----------------------------------------");
+    console.log("");
+    console.log("Type 'quit' at any time to end the game");
+    console.log("");
+    console.log("----------------------------------------");
+  }
   if (basicCount < basicCardsArr.length) {   
       inquirer.prompt([
         {
@@ -31,6 +38,9 @@ var playBasicCards = function () {
           if (answers.question == basicCardsArr[basicCount].back) {
             basicCorrect++;
             console.log("correct");
+          } else if (answers.question === "quit"){
+            basicCount = basicCardsArr.length;
+            
           } else {
             console.log("incorrect");
           }
@@ -43,10 +53,30 @@ var playBasicCards = function () {
         if (basicCorrect === basicCardsArr.length){
           console.log("Wow, you got them all right, have a gold star!");
         }
+      inquirer.prompt([
+        {
+        name: "retry",
+        message: "would you like to play again?"
+        }
+      ]).then(function(answers){
+        if (answers.retry === "yes") {
+            basicCount=0;
+            playBasicCards();
+        } else if (answers.retry === "no") {
+          console.log("Goodbye!");
+        }
+      })
      } 
     }
 
 var playClozeCards = function() {
+    if (clozeCount === 0) {
+    console.log("----------------------------------------");
+    console.log("");
+    console.log("Type 'quit' at any time to end the game");
+    console.log("");
+    console.log("----------------------------------------");
+  }
     if (clozeCount < clozeCardsArr.length) { 
       inquirer.prompt([
         {
@@ -57,6 +87,9 @@ var playClozeCards = function() {
           if (answers.question === clozeCardsArr[clozeCount].cloze) {
             clozeCorrect++;
             console.log("correct");
+          } else if (answers.question === "quit"){
+            clozeCount = clozeCardsArr.length;
+            
           } else {
             console.log("incorrect");
           }
@@ -68,15 +101,34 @@ var playClozeCards = function() {
         if (clozeCorrect === clozeCardsArr.length){
           console.log("Wow, you got them all right, have a gold star!");
         }
+      inquirer.prompt([
+        {
+        name: "retry",
+        message: "would you like to play again?"
+        }
+      ]).then(function(answers){
+        if (answers.retry === "yes") {
+            clozeCount=0;
+            playClozeCards();
+        } else if (answers.retry === "no") {
+          console.log("Goodbye!");
+        }
+      })
      } 
        
     }
 
 
 var createBasicCards = function() {
-  
+  if (basicCreateCount === 0) {
+    console.log("----------------------------------------");
+    console.log("");
+    console.log("Create 5 new cards");
+    console.log("");
+    console.log("----------------------------------------");
+  }
   if (basicCreateCount < 5) {
-    console.log("Create new flashcard");
+    console.log("Card Number " + basicCreateCount + 1);
     inquirer.prompt([
       {
         name: "front",
@@ -116,10 +168,16 @@ var createBasicCards = function() {
 };
 
 var createClozeCards = function () {
-  
+  if (clozeCreateCount === 0) {
+    console.log("----------------------------------------");
+    console.log("");
+    console.log("Create 5 new cards");
+    console.log("");
+    console.log("----------------------------------------");
+  }
   
   if (clozeCreateCount < 5) {
-    console.log("Create new cloze flashcard");
+    console.log("Card Number " + clozeCreateCount + 1);
     inquirer.prompt([
       {
         name: "fullText",
@@ -179,7 +237,7 @@ var startup = function () {
           } 
 
       })
-      } if (startUpQuestion = "no") {
+      } else if (startUpQuestion = "no") {
        inquirer.prompt([
         {
           name: "cardTypeSelection",
